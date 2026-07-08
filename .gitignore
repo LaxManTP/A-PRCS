@@ -1,0 +1,6 @@
+aprcsEnv/ 
+*.pt 
+runs/ 
+__pycache__/ 
+*.pyc 
+logs/ 
