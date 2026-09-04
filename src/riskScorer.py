@@ -13,10 +13,8 @@ from datetime import datetime, timezone
 
 SCHEMA_VERSION = '2.0.0'
 
-######################
-## CLASS CONFIGURATION
-######################
 
+# Class configurations
 CLASS_CONFIG = {
     'buffalo':  {'category': 'wildlife', 'baseThreat': 0.05, 'minConf': 0.35},
     'elephant': {'category': 'wildlife', 'baseThreat': 0.05, 'minConf': 0.35},
@@ -40,14 +38,8 @@ CLASS_CONFIG = {
 # as UNVERIFIED rather than silently dropped.
 ADVISORY_BAND = 0.15
 
-######################
-## COMBINATION FLAGS
-######################
-##
-## requiresProximity: flag only fires if the two classes are actually
-## near each other in frame, measured as normalized centre distance.
-######################
 
+# Combination flags
 COMBINATION_FLAGS = [
     {'classes': frozenset(['person', 'rifle']),    'multiplier': 2.0, 'flag': 'ARMED_PERSON_RIFLE',   'requiresProximity': True,  'maxDistance': 0.30},
     {'classes': frozenset(['person', 'pistol']),   'multiplier': 1.9, 'flag': 'ARMED_PERSON',         'requiresProximity': True,  'maxDistance': 0.30},
@@ -67,10 +59,7 @@ RISK_CATEGORIES = [
     (0.00, 'CLEAR'),
 ]
 
-######################
-## EVENT THRESHOLDS
-######################
-
+# Event thresholds
 THREAT_OPEN_THRESHOLD  = 0.30   # risk at which a threat event opens
 THREAT_CLOSE_THRESHOLD = 0.20   # hysteresis - must drop below this to close
 EVENT_COOLDOWN_S       = 8.0    # seconds below close threshold before closing
@@ -93,7 +82,7 @@ def boxCentre(box):
 
 def normalizedDistance(boxA, boxB, frameShape):
     """
-    Centre-to-centre distance as a fraction of the frame diagonal.
+    Center-to-center distance as a fraction of the frame diagonal.
     Returns None if frame dimensions are unknown.
     """
     if not frameShape:

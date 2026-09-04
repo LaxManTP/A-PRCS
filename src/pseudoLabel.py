@@ -39,9 +39,7 @@ from pathManager import DATASETS_DIR, PROJECT_ROOT
 SPLITS = ('train', 'valid', 'test', 'val')
 IMAGE_SUFFIXES = ('.jpg', '.jpeg', '.png', '.bmp', '.webp')
 
-######################
-## PSEUDO LABEL JOBS
-######################
+# Pseudo label jobs
 ##
 ##   name        short label used by --only and in output
 ##   root        dataset root containing train/ valid/ test/
@@ -54,7 +52,7 @@ IMAGE_SUFFIXES = ('.jpg', '.jpeg', '.png', '.bmp', '.webp')
 ##   minBoxArea  drop boxes smaller than this fraction of the frame,
 ##               which filters spurious background detections
 ##   enabled     set False once applied so a bulk run skips it
-######################
+
 
 PSEUDO_LABEL_JOBS = [
     {
@@ -86,10 +84,7 @@ REVIEW_DIR = PROJECT_ROOT / 'runs' / 'pseudoLabel'
 REVIEW_LIMIT = 60   # annotated images written per job for eyeballing
 
 
-######################
-## BOX GEOMETRY
-######################
-
+# Box geometry
 def xyxyToYolo(box, imageWidth, imageHeight):
     """Absolute [x1,y1,x2,y2] -> normalized [xc,yc,w,h]."""
     x1, y1, x2, y2 = box
@@ -133,10 +128,8 @@ def boxIou(boxA, boxB):
     return intersection / union if union > 0 else 0.0
 
 
-######################
-## LABEL FILE IO
-######################
 
+# Label file io
 def readLabels(labelPath):
     """Returns list of (classId, [xc,yc,w,h]). Missing file -> empty."""
     labelPath = Path(labelPath)
@@ -234,10 +227,8 @@ def mergeProposals(existing, proposals, iouSkip):
     return merged, added, skipped
 
 
-######################
-## REVIEW IMAGES
-######################
 
+# Review Images
 def writeReviewImage(imagePath, existing, proposals, outputPath, classNames=None):
     """
     Existing boxes green, pseudo-boxes magenta with confidence.
@@ -275,10 +266,7 @@ def writeReviewImage(imagePath, existing, proposals, outputPath, classNames=None
     return True
 
 
-######################
-## SPLIT PROCESSING
-######################
-
+# Split processing
 def backupLabels(labelsDir):
     labelsDir = Path(labelsDir)
     stamp = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -330,10 +318,7 @@ def processSplit(splitDir, model, job, dryRun, scanOnly, reviewDir, reviewBudget
                 stats['labelFilesCreated'] += 1
             pending.append((labelPath, merged, imagePath, existing, proposals))
 
-    ######################
-    ## REVIEW + WRITE
-    ######################
-
+ # Review and write
     if reviewDir is not None:
         written = 0
         for labelPath, _merged, imagePath, existing, proposals in pending:
@@ -356,9 +341,7 @@ def processSplit(splitDir, model, job, dryRun, scanOnly, reviewDir, reviewBudget
     return stats, confidences
 
 
-######################
-## JOB RUNNER
-######################
+# Job runner
 
 APRCS_CLASS_NAMES = [
     'buffalo', 'elephant', 'rhino', 'zebra', 'pistol',

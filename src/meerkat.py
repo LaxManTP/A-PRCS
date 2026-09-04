@@ -15,10 +15,8 @@ from ultralytics import YOLO
 from pathManager import MODELS_DIR, LOGS_DIR
 from riskScorer import RiskScorer
 
-######################
-## DEFAULTS
-######################
 
+# Default settings
 DEFAULT_MODEL      = MODELS_DIR / 'meerkat00.pt'
 DEFAULT_CONFIDENCE = 0.25
 DEFAULT_FRAME_SKIP = 5      # infer every Nth frame - saves power at the edge
@@ -33,9 +31,7 @@ def handleSignal(signum, frame):
     shutdownRequested = True
 
 
-######################
-## CAMERA
-######################
+# Camera
 
 def openCamera(source, width=None, height=None):
     capture = cv.VideoCapture(source)
@@ -58,10 +54,8 @@ def reconnectCamera(source, width, height, delay):
     return openCamera(source, width, height)
 
 
-######################
-## DISPLAY
-######################
 
+# Display
 def riskColor(score):
     if score >= 0.70:
         return (0, 0, 255)      # red
@@ -112,10 +106,8 @@ def drawOverlay(frame, state):
     return frame
 
 
-######################
-## MAIN
-######################
 
+# Main
 def run(args):
     global shutdownRequested
 
@@ -151,9 +143,7 @@ def run(args):
     try:
         while not shutdownRequested:
 
-            ######################
-            ## FRAME ACQUISITION
-            ######################
+            # Frame acquisition
 
             if capture is None or not capture.isOpened():
                 capture = reconnectCamera(source, args.width, args.height, retryDelay)
@@ -169,9 +159,7 @@ def run(args):
             retryDelay = 1.0
             frameCount += 1
 
-            ######################
-            ## INFERENCE
-            ######################
+             # Inference
 
             ranInference = frameCount % args.frameSkip == 0
 
@@ -223,10 +211,7 @@ def run(args):
         pass
 
     finally:
-        ######################
-        ## SHUTDOWN
-        ######################
-
+        # Shutdown
         scorer.shutdown()
 
         if capture is not None:

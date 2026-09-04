@@ -3,9 +3,6 @@
 ## A-PRCS
 ## YOLO Label Class Remapping
 ######################
-##
-## Replaces pistolReclass.py. Three bugs fixed from the original:
-##
 ##   1. filename.endswith('#####') was a placeholder that never
 ##      matched anything. Every file was skipped and the script
 ##      reported success. It is now '.txt'.
@@ -27,7 +24,7 @@ import argparse
 from collections import Counter
 from pathlib import Path
 
-from paths import DATASETS_DIR
+from pathManager import DATASETS_DIR
 
 SPLITS = ('train', 'valid', 'test', 'val')
 

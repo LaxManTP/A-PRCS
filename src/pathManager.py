@@ -3,14 +3,6 @@
 ## A-PRCS
 ## Canonical Project Paths
 ######################
-##
-## Every path in A-PRCS resolves from this file.
-## Nothing else should hardcode an absolute path, and nothing
-## should rely on the current working directory.
-##
-## PROJECT_ROOT is derived from THIS file's location, so the
-## project can be cloned or moved anywhere and still work.
-######################
 
 from pathlib import Path
 
@@ -33,19 +25,8 @@ for _d in (MODELS_DIR, RUNS_DIR, LOGS_DIR):
 
 
 def alignUltralyticsSettings():
-    """
-    Ultralytics keeps a persistent settings file that can silently
-    redirect runs and dataset lookups to a stale location:
 
-        Windows:  %APPDATA%/Ultralytics/settings.json
-        Linux:    ~/.config/Ultralytics/settings.json
-
-    If 'runs_dir' or 'datasets_dir' in there points at an old project,
-    training output goes somewhere you don't expect regardless of what
-    you pass to model.train(). This forces them back to THIS project.
-
-    Call once at the top of any training entry point.
-    """
+    # To be called once at the beginning of training sessions
     from ultralytics import settings
 
     desired = {
